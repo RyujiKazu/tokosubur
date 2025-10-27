@@ -21,8 +21,8 @@
     <ul class="navbar-nav ml-auto ml-md-0">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               <i class="fas fa-user fa-fw"></i>
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-user fa-fw"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">Settings</a>
@@ -76,38 +76,27 @@
                                 <thead>
                                     <tr>
                                         <th>No Transaksi</th>
-                                        <th>Id Produk</th>
                                         <th>Jumlah</th>
                                         <th>Total Harga</th>
                                         <th>Tanggal</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td>TRX-001</td><td>PROD-101</td><td>2</td><td>Rp 150.000</td><td>2025/10/01</td></tr>
-                                    <tr><td>TRX-002</td><td>PROD-103</td><td>1</td><td>Rp 80.000</td><td>2025/10/02</td></tr>
-                                    <tr><td>TRX-003</td><td>PROD-102</td><td>3</td><td>Rp 210.000</td><td>2025/10/03</td></tr>
-                                    <tr><td>TRX-004</td><td>PROD-105</td><td>1</td><td>Rp 50.000</td><td>2025/10/04</td></tr>
-                                    <tr><td>TRX-005</td><td>PROD-101</td><td>1</td><td>Rp 75.000</td><td>2025/10/05</td></tr>
-                                    <tr><td>TRX-006</td><td>PROD-108</td><td>5</td><td>Rp 500.000</td><td>2025/10/06</td></tr>
-                                    <tr><td>TRX-007</td><td>PROD-102</td><td>2</td><td>Rp 140.000</td><td>2025/10/07</td></tr>
-                                    <tr><td>TRX-008</td><td>PROD-110</td><td>1</td><td>Rp 1.200.000</td><td>2025/10/08</td></tr>
-                                    <tr><td>TRX-009</td><td>PROD-104</td><td>4</td><td>Rp 100.000</td><td>2025/10/09</td></tr>
-                                    <tr><td>TRX-010</td><td>PROD-106</td><td>1</td><td>Rp 35.000</td><td>2025/10/10</td></tr>
-                                    <tr><td>TRX-011</td><td>PROD-107</td><td>2</td><td>Rp 240.000</td><td>2025/10/11</td></tr>
-                                    <tr><td>TRX-012</td><td>PROD-103</td><td>1</td><td>Rp 80.000</td><td>2025/10/12</td></tr>
-                                    <tr><td>TRX-013</td><td>PROD-105</td><td>3</td><td>Rp 150.000</td><td>2025/10/13</td></tr>
-                                    <tr><td>TRX-014</td><td>PROD-109</td><td>1</td><td>Rp 90.000</td><td>2025/10/14</td></tr>
-                                    <tr><td>TRX-015</td><td>PROD-101</td><td>2</td><td>Rp 150.000</td><td>2025/10/15</td></tr>
-                                    <tr><td>TRX-016</td><td>PROD-110</td><td>1</td><td>Rp 1.200.000</td><td>2025/10/16</td></tr>
-                                    <tr><td>TRX-017</td><td>PROD-102</td><td>1</td><td>Rp 70.000</td><td>2025/10/17</td></tr>
-                                    <tr><td>TRX-018</td><td>PROD-108</td><td>2</td><td>Rp 200.000</td><td>2025/10/18</td></tr>
-                                    <tr><td>TRX-019</td><td>PROD-104</td><td>5</td><td>Rp 125.000</td><td>2025/10/19</td></tr>
-                                    <tr><td>TRX-020</td><td>PROD-106</td><td>3</td><td>Rp 105.000</td><td>2025/10/20</td></tr>
-                                    <tr><td>TRX-021</td><td>PROD-101</td><td>1</td><td>Rp 75.000</td><td>2025/10/21</td></tr>
-                                    <tr><td>TRX-022</td><td>PROD-107</td><td>1</td><td>Rp 120.000</td><td>2025/10/22</td></tr>
-                                    <tr><td>TRX-023</td><td>PROD-103</td><td>4</td><td>Rp 320.000</td><td>2025/10/23</td></tr>
-                                    <tr><td>TRX-024</td><td>PROD-109</td><td>1</td><td>Rp 90.000</td><td>2025/10/24</td></tr>
-                                    <tr><td>TRX-025</td><td>PROD-105</td><td>2</td><td>Rp 100.000</td><td>2025/10/25</td></tr>
+                                    {{-- 
+                                        Catatan: Saya harus mengasumsikan jumlah galon/gas agar sesuai total harga
+                                        Asumsi Harga: Galon = 7.000, Gas = 20.000
+                                        Data dummy ini disesuaikan agar demonya berfungsi
+                                    --}}
+                                    <tr><td>TRX-001</td><td>3</td><td>Rp 34.000</td><td>2025/10/01</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-001" data-galon="2" data-gas="1">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-001">Delete</a></td></tr>
+                                    <tr><td>TRX-002</td><td>4</td><td>Rp 80.000</td><td>2025/10/02</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-002" data-galon="0" data-gas="4">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-002">Delete</a></td></tr>
+                                    <tr><td>TRX-003</td><td>3</td><td>Rp 21.000</td><td>2025/10/03</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-003" data-galon="3" data-gas="0">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-003">Delete</a></td></tr>
+                                    <tr><td>TRX-004</td><td>2</td><td>Rp 40.000</td><td>2025/10/04</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-004" data-galon="0" data-gas="2">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-004">Delete</a></td></tr>
+                                    <tr><td>TRX-005</td><td>1</td><td>Rp 27.000</td><td>2025/10/05</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-005" data-galon="1" data-gas="1">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-005">Delete</a></td></tr>
+                                    <tr><td>TRX-006</td><td>5</td><td>Rp 35.000</td><td>2025/10/06</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-006" data-galon="5" data-gas="0">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-006">Delete</a></td></tr>
+                                    <tr><td>TRX-007</td><td>4</td><td>Rp 54.000</td><td>2025/10/07</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-007" data-galon="2" data-gas="2">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-007">Delete</a></td></tr>
+                                    <tr><td>TRX-008</td><td>1</td><td>Rp 20.000</td><td>2025/10/08</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-008" data-galon="0" data-gas="1">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-008">Delete</a></td></tr>
+                                    {{-- Data dummy lainnya bisa mengikuti pola yang sama --}}
                                 </tbody>
                             </table>
                         </div>
@@ -115,6 +104,81 @@
                 </div>
             </div>
         </main>
+
+        <!-- [START] MODAL UNTUK DETAIL/UPDATE -->
+        <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailModalLabel">Detail Transaksi: </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- Form untuk update -->
+                    <form id="detailForm" action="" method="POST">
+                        @csrf
+                        @method('PUT') <!-- Method spoofing untuk update -->
+                        <div class="modal-body">
+                            <p>Ubah jumlah barang untuk menghitung ulang total harga.</p>
+                            
+                            <!-- Input untuk ID Transaksi (disembunyikan) -->
+                            <input type="hidden" id="detailTransactionId" name="transaction_id">
+
+                            <div class="form-group">
+                                <label for="detailJumlahGalon">Jumlah Galon</label>
+                                <input type="number" id="detailJumlahGalon" name="jumlah_galon" class="form-control" min="0">
+                            </div>
+            
+                            <div class="form-group">
+                                <label for="detailJumlahGas">Jumlah Gas</label>
+                                <input type="number" id="detailJumlahGas" name="jumlah_gas" class="form-control" min="0">
+                            </div>
+                        
+                            <hr>
+                            <div id="summary" class="mt-3">
+                                <h4>Total Harga Baru:</h4>
+                                <h3 id="detailTotalHarga">Rp 0</h3>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Update Pesanan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- [END] MODAL UNTUK DETAIL/UPDATE -->
+
+
+        <!-- [START] MODAL UNTUK KONFIRMASI DELETE -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus Transaksi</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- Form untuk delete -->
+                    <form id="deleteForm" action="" method="POST">
+                        @csrf
+                        @method('DELETE') <!-- Method spoofing untuk delete -->
+                        <div class="modal-body">
+                            <p id="deleteModalText">Apakah Anda yakin ingin menghapus transaksi ini?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Ya, Hapus Transaksi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- [END] MODAL UNTUK KONFIRMASI DELETE -->
+
 
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid">
@@ -131,3 +195,9 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    {{-- Memanggil file JS eksternal yang baru --}}
+    <script src="{{ asset('js/pengolahanPesanan.js') }}"></script>
+@endpush
+

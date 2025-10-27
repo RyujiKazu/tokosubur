@@ -21,8 +21,8 @@
     <ul class="navbar-nav ml-auto ml-md-0">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               <i class="fas fa-user fa-fw"></i>
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-user fa-fw"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">Settings</a>
@@ -65,48 +65,85 @@
         <main>
             <div class="container-fluid">
                 <h1 class="mt-4">Pencatatan Pesanan</h1>
+
+                {{-- Tampilkan error validasi jika ada --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> Terjadi kesalahan:<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                
+                {{-- Tampilkan pesan error dari controller --}}
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table mr-1"></i>
-                        DataTable Example
+                        <i class="fas fa-edit mr-1"></i>
+                        Buat Pesanan Baru
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    {{-- Data dummy bawaan template --}}
-                                    <tr><td>Tiger Nixon</td><td>System Architect</td><td>Edinburgh</td><td>61</td><td>2011/04/25</td><td>$320,800</td></tr>
-                                    <tr><td>Garrett Winters</td><td>Accountant</td><td>Tokyo</td><td>63</td><td>2011/07/25</td><td>$170,750</td></tr>
-                                    <tr><td>Ashton Cox</td><td>Junior Technical Author</td><td>San Francisco</td><td>66</td><td>2009/01/12</td><td>$86,000</td></tr>
-                                    {{-- ... (lanjutan rows dari template boleh dibiarkan atau dihapus) --}}
-                                </tbody>
-                            </table>
-                        </div>
+                        
+                        <form action="{{ route('pesanan.store') }}" method="POST" id="orderForm"> 
+                            @csrf
+
+                            {{-- Container untuk baris-baris produk dinamis --}}
+                            <div id="product-order-list">
+                                <!-- Baris produk dinamis akan muncul di sini (dibuat oleh JS) -->
+                            </div>
+                            
+                            {{-- Tombol untuk menambah baris produk baru --}}
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <button type="button" class="btn btn-success" id="add-product-row">+ Tambah Produk</button>
+                                </div>
+                            </div>
+                            
+                            <hr>
+
+                            <div id="summary" class="mt-3">
+                                <h4>Total Harga:</h4>
+                                <h3 id="total-harga">Rp 0</h3>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt-3">Buat Pesanan</button>
+
+                        </form>
+
                     </div>
                 </div>
-
             </div>
         </main>
+
+        <!-- Modal Konfirmasi (HTML tetap sama) -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitleId">Konfirmasi</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modalBodyId">
+                        <!-- Konten diisi oleh JS -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary" id="confirmSubmitButton">Buat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid">
@@ -123,3 +160,19 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        // Variabel global yang akan dibaca oleh pencatatanPesanan.js
+        window.PRODUCT_DATA = {!! json_encode($products->map(function($product) {
+            return [
+                'id_product' => $product->id_product,
+                'nama_product' => $product->nama_product,
+                'harga_product' => $product->harga_product
+            ];
+        })) !!};
+    </script>
+
+    {{-- Memanggil file JS yang sudah kita perbarui --}}
+    <script src="{{ asset('js/pencatatanPesanan.js') }}"></script>
+@endpush
