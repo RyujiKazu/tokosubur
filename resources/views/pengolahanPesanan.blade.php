@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Toko Subur Gas')
+@section('title','Pengolahan Pesanan - Toko Subur Gas')
 
 @section('content')
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -65,6 +65,30 @@
         <main>
             <div class="container-fluid">
                 <h1 class="mt-4">Pengolahan Pesanan</h1>
+
+                <!-- Tampilkan pesan sukses/error dari Controller -->
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                <!-- Tampilkan error validasi -->
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> Terjadi kesalahan:<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table mr-1"></i>
@@ -76,27 +100,37 @@
                                 <thead>
                                     <tr>
                                         <th>No Transaksi</th>
+                                        <th>Nama Produk</th>
                                         <th>Jumlah</th>
                                         <th>Total Harga</th>
-                                        <th>Tanggal</th>
+                                        <th>Tanggal/Waktu</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- 
-                                        Catatan: Saya harus mengasumsikan jumlah galon/gas agar sesuai total harga
-                                        Asumsi Harga: Galon = 7.000, Gas = 20.000
-                                        Data dummy ini disesuaikan agar demonya berfungsi
-                                    --}}
-                                    <tr><td>TRX-001</td><td>3</td><td>Rp 34.000</td><td>2025/10/01</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-001" data-galon="2" data-gas="1">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-001">Delete</a></td></tr>
-                                    <tr><td>TRX-002</td><td>4</td><td>Rp 80.000</td><td>2025/10/02</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-002" data-galon="0" data-gas="4">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-002">Delete</a></td></tr>
-                                    <tr><td>TRX-003</td><td>3</td><td>Rp 21.000</td><td>2025/10/03</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-003" data-galon="3" data-gas="0">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-003">Delete</a></td></tr>
-                                    <tr><td>TRX-004</td><td>2</td><td>Rp 40.000</td><td>2025/10/04</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-004" data-galon="0" data-gas="2">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-004">Delete</a></td></tr>
-                                    <tr><td>TRX-005</td><td>1</td><td>Rp 27.000</td><td>2025/10/05</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-005" data-galon="1" data-gas="1">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-005">Delete</a></td></tr>
-                                    <tr><td>TRX-006</td><td>5</td><td>Rp 35.000</td><td>2025/10/06</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-006" data-galon="5" data-gas="0">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-006">Delete</a></td></tr>
-                                    <tr><td>TRX-007</td><td>4</td><td>Rp 54.000</td><td>2025/10/07</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-007" data-galon="2" data-gas="2">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-007">Delete</a></td></tr>
-                                    <tr><td>TRX-008</td><td>1</td><td>Rp 20.000</td><td>2025/10/08</td><td><a href="#" class="btn btn-info btn-sm mr-1 button-detail" data-id="TRX-008" data-galon="0" data-gas="1">Detail</a><a href="#" class="btn btn-danger btn-sm button-delete" data-id="TRX-008">Delete</a></td></tr>
-                                    {{-- Data dummy lainnya bisa mengikuti pola yang sama --}}
+                                    {{-- Data diisi dari Controller --}}
+                                    @foreach ($transaksis as $trx)
+                                    <tr>
+                                        <td>{{ $trx->no_transaksi }}</td>
+                                        <td>{{ $trx->nama_product }}</td>
+                                        <td>{{ $trx->qty }}</td>
+                                        <td>{{ 'Rp ' . number_format($trx->total, 0, ',', '.') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($trx->tanggal)->format('d-m-Y H:i:s') }}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-info btn-sm mr-1 button-detail" 
+                                               data-id="{{ $trx->no_transaksi }}"
+                                               data-nama-produk="{{ $trx->nama_product }}"
+                                               data-qty="{{ $trx->qty }}"
+                                               data-harga-produk="{{ $trx->harga_product }}">
+                                               Detail
+                                            </a>
+                                            <a href="#" class="btn btn-danger btn-sm button-delete" 
+                                               data-id="{{ $trx->no_transaksi }}">
+                                               Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -105,7 +139,7 @@
             </div>
         </main>
 
-        <!-- [START] MODAL UNTUK DETAIL/UPDATE -->
+        <!-- [START] MODAL UNTUK DETAIL/UPDATE (DIRUBAH) -->
         <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -120,21 +154,17 @@
                         @csrf
                         @method('PUT') <!-- Method spoofing untuk update -->
                         <div class="modal-body">
-                            <p>Ubah jumlah barang untuk menghitung ulang total harga.</p>
                             
-                            <!-- Input untuk ID Transaksi (disembunyikan) -->
-                            <input type="hidden" id="detailTransactionId" name="transaction_id">
+                            <div class="form-group">
+                                <label>Nama Produk</label>
+                                <input type="text" id="detailNamaProduk" class="form-control" readonly>
+                            </div>
 
                             <div class="form-group">
-                                <label for="detailJumlahGalon">Jumlah Galon</label>
-                                <input type="number" id="detailJumlahGalon" name="jumlah_galon" class="form-control" min="0">
+                                <label for="detailJumlahProduk">Jumlah Produk (Qty)</label>
+                                <input type="number" id="detailJumlahProduk" name="qty" class="form-control" min="0">
                             </div>
-            
-                            <div class="form-group">
-                                <label for="detailJumlahGas">Jumlah Gas</label>
-                                <input type="number" id="detailJumlahGas" name="jumlah_gas" class="form-control" min="0">
-                            </div>
-                        
+                    
                             <hr>
                             <div id="summary" class="mt-3">
                                 <h4>Total Harga Baru:</h4>
@@ -152,7 +182,7 @@
         <!-- [END] MODAL UNTUK DETAIL/UPDATE -->
 
 
-        <!-- [START] MODAL UNTUK KONFIRMASI DELETE -->
+        <!-- [START] MODAL UNTUK KONFIRMASI DELETE (Tetap Sama) -->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -200,4 +230,3 @@
     {{-- Memanggil file JS eksternal yang baru --}}
     <script src="{{ asset('js/pengolahanPesanan.js') }}"></script>
 @endpush
-

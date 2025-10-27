@@ -24,7 +24,7 @@ return new class extends Migration
         Schema::create('transaksi', function (Blueprint $table) {
             $table->string('no_transaksi', 30)->primary();
             $table->unsignedBigInteger('id_product'); // FK ke produk.id_product
-            $table->decimal('qty', 10, 2);
+            $table->integer('qty');
             $table->decimal('total', 12, 2);
             $table->dateTime('tanggal');
 
