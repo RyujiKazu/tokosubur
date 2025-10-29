@@ -37,16 +37,6 @@ $(document).ready(function() {
         // Template HTML untuk baris baru
         const newRowHtml = `
             <div class="row product-row mb-3 p-3 border rounded" data-index="${rowIndex}">
-                
-                <!-- Toggle Buat Baru -->
-                <div class="col-12 mb-2">
-                    <div class="form-check">
-                        <input class="form-check-input new-product-toggle" type="checkbox" id="newProductCheck${rowIndex}">
-                        <label class="form-check-label" for="newProductCheck${rowIndex}">
-                            Buat Produk Baru?
-                        </label>
-                    </div>
-                </div>
 
                 <!-- Grup 1: Dropdown Produk (Default) -->
                 <div class="col-md-6 existing-product-group">
@@ -54,16 +44,6 @@ $(document).ready(function() {
                     <select name="products[${rowIndex}][id]" class="form-control product-select">
                         ${productOptions}
                     </select>
-                </div>
-
-                <!-- Grup 2: Input Produk Baru (Hidden) -->
-                <div class="col-md-4 new-product-group" style="display: none;">
-                    <label>Nama Produk Baru</label>
-                    <input type="text" name="products[${rowIndex}][new_name]" class="form-control new-product-name" placeholder="Nama Produk" disabled>
-                </div>
-                <div class="col-md-2 new-product-group" style="display: none;">
-                    <label>Harga</label>
-                    <input type="number" name="products[${rowIndex}][new_price]" class="form-control new-product-price" placeholder="Harga" min="0" disabled>
                 </div>
 
                 <!-- Grup 3: Kuantitas (Selalu Ada) -->
@@ -115,29 +95,6 @@ $(document).ready(function() {
     productListContainer.on('click', '.remove-product-row', function() {
         $(this).closest('.product-row').remove();
         hitungTotal();
-    });
-
-    // 3. Checkbox "Buat Produk Baru" diganti
-    productListContainer.on('change', '.new-product-toggle', function() {
-        const row = $(this).closest('.product-row');
-        const existingGroup = row.find('.existing-product-group');
-        const newGroup = row.find('.new-product-group');
-
-        if (this.checked) {
-            // Tampilkan input baru, sembunyikan dropdown
-            existingGroup.hide();
-            newGroup.show();
-            // Enable/Disable input agar data form benar
-            existingGroup.find('select').prop('disabled', true);
-            newGroup.find('input').prop('disabled', false);
-        } else {
-            // Tampilkan dropdown, sembunyikan input baru
-            existingGroup.show();
-            newGroup.hide();
-            existingGroup.find('select').prop('disabled', false);
-            newGroup.find('input').prop('disabled', true);
-        }
-        hitungTotal(); // Hitung ulang total
     });
 
     // 4. Kuantitas, harga, atau pilihan produk diubah
