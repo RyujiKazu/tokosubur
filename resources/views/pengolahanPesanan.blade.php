@@ -48,6 +48,10 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                         Pencatatan Pesanan
                     </a>
+                    <a class="nav-link" href="{{ url('/tambahProduk') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-plus-circle"></i></div>
+                        Tambah Produk
+                    </a>
                     <a class="nav-link" href="{{ url('/PengolahanPesanan') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                         Pengolahan Pesanan
