@@ -22,3 +22,5 @@ Route::delete('/pesanan/{no_transaksi}', [PengolahanPesananController::class, 'd
 Route::get('/tambahProduk', [ProdukController::class, 'create'])->name('produk.create');
 
 Route::post('/tambahProduk', [ProdukController::class, 'store'])->name('produk.store');
+
+Route::get('/PengolahanPesanan', [PengolahanPesananController::class, 'index'])->name('pengolahan.index');

@@ -14,18 +14,25 @@ class PengolahanPesananController extends Controller
     /**
      * Menampilkan daftar semua transaksi (READ).
      */
-    public function index()
-    {
-        // Ambil data transaksi, gabung (JOIN) dengan tabel produk
-        // untuk mendapatkan nama produk. Urutkan dari yang terbaru.
-        $transaksis = Transaksi::join('produk', 'transaksi.id_product', '=', 'produk.id_product')
-                        ->select('transaksi.*', 'produk.nama_product', 'produk.harga_product')
-                        ->orderBy('transaksi.tanggal', 'desc')
-                        ->get();
 
-        // Tampilkan view dan kirim data $transaksis
-        return view('pengolahanPesanan', compact('transaksis'));
-    }
+public function index()
+{
+    $q = request('q'); // keyword pencarian no_transaksi
+
+    $transaksis = DB::table('transaksi as t')
+        ->join('produk as p', 'p.id_product', '=', 't.id_product')
+        ->select('t.no_transaksi', 'p.nama_product', 't.qty', 't.total', 't.tanggal', 'p.harga_product')
+        ->when($q, function ($query) use ($q) {
+            $query->where('t.no_transaksi', 'like', "%{$q}%");
+        })
+        ->orderBy('t.tanggal', 'desc')
+        ->paginate(25)
+        ->withQueryString();
+
+    // Pastikan nama view konsisten (pakai satu nama saja)
+    return view('pengolahanPesanan', compact('transaksis', 'q'));
+}
+
 
     /**
      * Mengupdate data transaksi (UPDATE).
@@ -84,4 +91,5 @@ class PengolahanPesananController extends Controller
             return redirect()->back()->with('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
         }
     }
+    
 }
