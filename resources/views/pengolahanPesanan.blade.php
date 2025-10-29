@@ -101,21 +101,6 @@
                         </div>
 
                         <div class="card-body">
-                            <form method="GET" action="{{ route('pengolahan.index') }}" class="mb-3">
-                                <div class="input-group">
-                                    <input type="text" name="q" class="form-control"
-                                        placeholder="Cari No Transaksi…" value="{{ request('q') }}">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">
-                                            <i class="fas fa-search"></i> Cari
-                                        </button>
-                                        @if (request('q'))
-                                            <a href="{{ route('pengolahan.index') }}"
-                                                class="btn btn-outline-secondary">Reset</a>
-                                        @endif
-                                    </div>
-                                </div>
-                            </form>
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
