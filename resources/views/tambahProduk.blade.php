@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Produk')
+@section('title', 'Toko Subur Gas')
 
 @section('content')
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -42,7 +42,6 @@
                 <div class="container-fluid">
                     <h1 class="mt-4">Tambah Produk Baru</h1>
 
-                    {{-- Tampilkan error validasi jika ada --}}
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <strong>Whoops!</strong> Terjadi kesalahan:<br><br>
@@ -54,12 +53,18 @@
                         </div>
                     @endif
 
-                    {{-- Pesan sukses --}}
                     @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
                     @endif
+                    
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
 
                     <div class="card mb-4">
                         <div class="card-header">
@@ -71,7 +76,8 @@
                                 @csrf
 
                                 <div id="product-add-list">
-                                    </div>
+                                    {{-- Baris produk baru akan ditambahkan oleh JS --}}
+                                </div>
 
                                 <div class="row mt-2">
                                     <div class="col">
@@ -98,24 +104,39 @@
                                         <th>Nama Produk</th>
                                         <th>Harga</th>
                                         <th>Tanggal Dibuat</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- 
-                                        MODIFIKASI 1: Tambahkan ->sortBy('created_at') untuk mengurutkan dari terlama ke terbaru.
-                                        MODIFIKASI 2: Hapus '$index =>' karena kita akan pakai $loop->iteration.
-                                    --}}
                                     @forelse ($products->sortBy('created_at') as $product)
                                         <tr>
-                                            {{-- MODIFIKASI 3: Ganti '$index + 1' menjadi '$loop->iteration' --}}
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $product->nama_product }}</td>
                                             <td>Rp {{ number_format($product->harga_product, 0, ',', '.') }}</td>
                                             <td>{{ $product->created_at->format('d M Y') }}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-warning" 
+                                                        data-toggle="modal" 
+                                                        data-target="#editModal" 
+                                                        data-id="{{ $product->id_product }}" 
+                                                        data-nama="{{ $product->nama_product }}" 
+                                                        data-harga="{{ $product->harga_product }}">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                                
+                                                <form action="{{ route('produk.destroy', $product->id_product) }}" method="POST" class="d-inline"
+                                                      onsubmit="return confirm('Yakin ingin menghapus produk {{ $product->nama_product }}?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-trash"></i> Hapus
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center text-muted">Belum ada produk ditambahkan
+                                            <td colspan="5" class="text-center text-muted">Belum ada produk ditambahkan
                                             </td>
                                         </tr>
                                     @endforelse
@@ -136,8 +157,89 @@
             </footer>
         </div>
     </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Produk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="editProductForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        
+                        @if ($errors->edit_error->any())
+                             <div class="alert alert-danger">
+                                <strong>Whoops!</strong> Terjadi kesalahan:<br><br>
+                                <ul>
+                                    @foreach ($errors->edit_error->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <div class="form-group">
+                            <label for="edit_nama_product">Nama Produk</label>
+                            <input type="text" class="form-control" id="edit_nama_product" name="nama_product" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_harga_product">Harga Produk</label>
+                            <input type="number" class="form-control" id="edit_harga_product" name="harga_product" min="0" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
     <script src="{{ asset('js/tambahProduk.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#editModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); 
+                
+                
+                var id = button.data('id');
+                var nama = button.data('nama');
+                var harga = button.data('harga');
+
+                var modal = $(this);
+
+                var actionUrl = '{{ url("produk") }}/' + id;
+                modal.find('#editProductForm').attr('action', actionUrl);
+
+                modal.find('#edit_nama_product').val(nama);
+                modal.find('#edit_harga_product').val(harga);
+            });
+
+            @if ($errors->edit_error->any() && session('error_modal_id'))
+                var oldNama = '{{ old('nama_product') }}';
+                var oldHarga = '{{ old('harga_product') }}';
+                var id = {{ session('error_modal_id') }};
+
+                var modal = $('#editModal');
+
+                var actionUrl = '{{ url("produk") }}/' + id;
+                modal.find('#editProductForm').attr('action', actionUrl);
+
+                modal.find('#edit_nama_product').val(oldNama);
+                modal.find('#edit_harga_product').val(oldHarga);
+                
+                modal.modal('show');
+            @endif
+        });
+    </script>
 @endpush

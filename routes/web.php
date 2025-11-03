@@ -23,4 +23,8 @@ Route::get('/tambahProduk', [ProdukController::class, 'create'])->name('produk.c
 
 Route::post('/tambahProduk', [ProdukController::class, 'store'])->name('produk.store');
 
+Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+
+Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+
 Route::get('/PengolahanPesanan', [PengolahanPesananController::class, 'index'])->name('pengolahan.index');

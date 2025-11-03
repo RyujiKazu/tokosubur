@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pengolahan Pesanan - Toko Subur Gas')
+@section('title', 'Toko Subur Gas')
 
 @section('content')
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -8,7 +8,6 @@
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
         </button>
-        <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
             <div class="input-group">
                 <input class="form-control" type="text" placeholder="Search for..." aria-label="Search"
@@ -18,7 +17,6 @@
                 </div>
             </div>
         </form>
-        <!-- Navbar-->
         <ul class="navbar-nav ml-auto ml-md-0">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
@@ -71,7 +69,6 @@
                 <div class="container-fluid">
                     <h1 class="mt-4">Pengolahan Pesanan</h1>
 
-                    <!-- Tampilkan pesan sukses/error dari Controller -->
                     @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
@@ -82,7 +79,6 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <!-- Tampilkan error validasi -->
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <strong>Whoops!</strong> Terjadi kesalahan:<br><br>
@@ -138,7 +134,6 @@
                 </div>
             </main>
 
-            <!-- [START] MODAL UNTUK KONFIRMASI DELETE (Tetap Sama) -->
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -149,10 +144,9 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <!-- Form untuk delete -->
                         <form id="deleteForm" action="" method="POST">
                             @csrf
-                            @method('DELETE') <!-- Method spoofing untuk delete -->
+                            @method('DELETE')
                             <div class="modal-body">
                                 <p id="deleteModalText">Apakah Anda yakin ingin menghapus transaksi ini?</p>
                             </div>
@@ -164,8 +158,6 @@
                     </div>
                 </div>
             </div>
-            <!-- [END] MODAL UNTUK KONFIRMASI DELETE -->
-
 
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid">
@@ -184,6 +176,5 @@
 @endsection
 
 @push('scripts')
-    {{-- Memanggil file JS eksternal yang baru --}}
     <script src="{{ asset('js/pengolahanPesanan.js') }}"></script>
 @endpush
