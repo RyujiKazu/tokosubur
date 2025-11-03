@@ -123,13 +123,6 @@
                                                 <td>{{ 'Rp ' . number_format($trx->total, 0, ',', '.') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($trx->tanggal)->format('d-m-Y H:i:s') }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-info btn-sm mr-1 button-detail"
-                                                        data-id="{{ $trx->no_transaksi }}"
-                                                        data-nama-produk="{{ $trx->nama_product }}"
-                                                        data-qty="{{ $trx->qty }}"
-                                                        data-harga-produk="{{ $trx->harga_product }}">
-                                                        Detail
-                                                    </a>
                                                     <a href="#" class="btn btn-danger btn-sm button-delete"
                                                         data-id="{{ $trx->no_transaksi }}">
                                                         Delete
@@ -144,51 +137,6 @@
                     </div>
                 </div>
             </main>
-
-            <!-- [START] MODAL UNTUK DETAIL/UPDATE (DIRUBAH) -->
-            <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="detailModalLabel">Detail Transaksi: </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <!-- Form untuk update -->
-                        <form id="detailForm" action="" method="POST">
-                            @csrf
-                            @method('PUT') <!-- Method spoofing untuk update -->
-                            <div class="modal-body">
-
-                                <div class="form-group">
-                                    <label>Nama Produk</label>
-                                    <input type="text" id="detailNamaProduk" class="form-control" readonly>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="detailJumlahProduk">Jumlah Produk (Qty)</label>
-                                    <input type="number" id="detailJumlahProduk" name="qty" class="form-control"
-                                        min="0">
-                                </div>
-
-                                <hr>
-                                <div id="summary" class="mt-3">
-                                    <h4>Total Harga Baru:</h4>
-                                    <h3 id="detailTotalHarga">Rp 0</h3>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Update Pesanan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- [END] MODAL UNTUK DETAIL/UPDATE -->
-
 
             <!-- [START] MODAL UNTUK KONFIRMASI DELETE (Tetap Sama) -->
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
