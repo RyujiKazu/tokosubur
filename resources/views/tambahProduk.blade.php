@@ -71,8 +71,7 @@
                                 @csrf
 
                                 <div id="product-add-list">
-                                    <!-- Baris produk dinamis dibuat via JS -->
-                                </div>
+                                    </div>
 
                                 <div class="row mt-2">
                                     <div class="col">
@@ -102,9 +101,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($products as $index => $product)
+                                    {{-- 
+                                        MODIFIKASI 1: Tambahkan ->sortBy('created_at') untuk mengurutkan dari terlama ke terbaru.
+                                        MODIFIKASI 2: Hapus '$index =>' karena kita akan pakai $loop->iteration.
+                                    --}}
+                                    @forelse ($products->sortBy('created_at') as $product)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
+                                            {{-- MODIFIKASI 3: Ganti '$index + 1' menjadi '$loop->iteration' --}}
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $product->nama_product }}</td>
                                             <td>Rp {{ number_format($product->harga_product, 0, ',', '.') }}</td>
                                             <td>{{ $product->created_at->format('d M Y') }}</td>
