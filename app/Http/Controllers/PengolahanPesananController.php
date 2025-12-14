@@ -91,5 +91,47 @@ public function index()
             return redirect()->back()->with('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
         }
     }
-    
+    /**
+     * Export data transaksi ke Excel (CSV).
+     */
+    public function exportExcel()
+    {
+        $fileName = 'laporan_transaksi_' . date('Y-m-d_H-i-s') . '.csv';
+
+        // Ambil semua data transaksi, urutkan dari yang terbaru
+        // Kita gunakan Model Transaksi agar bisa memanggil relasi 'produk' dengan mudah
+        $transaksis = Transaksi::with('produk')->orderBy('tanggal', 'desc')->get();
+
+        $headers = array(
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        );
+
+        $callback = function() use($transaksis) {
+            $file = fopen('php://output', 'w');
+
+            // Header kolom di file Excel
+            fputcsv($file, ['No Transaksi', 'Tanggal', 'Nama Produk', 'Qty', 'Total Harga']);
+
+            // Isi baris data
+            foreach ($transaksis as $row) {
+                fputcsv($file, [
+                    $row->no_transaksi,
+                    // Format tanggal agar rapi
+                    $row->tanggal ? $row->tanggal->format('Y-m-d H:i:s') : '-',
+                    // Ambil nama produk (cegah error jika produk terhapus)
+                    $row->produk->nama_product ?? 'Produk Dihapus', 
+                    $row->qty,
+                    $row->total
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

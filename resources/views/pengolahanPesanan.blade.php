@@ -90,88 +90,92 @@
                         </div>
                     @endif
 
-                    <div class="card mb-4">
-                        <div class="card-header">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
                             <i class="fas fa-table mr-1"></i>
                             Tabel Transaksi
                         </div>
+                        <a href="{{ url('/export-transaksi') }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-file-excel"></i> Export Excel
+                        </a>
+                    </div>
 
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>No Transaksi</th>
+                                        <th>Nama Produk</th>
+                                        <th>Jumlah</th>
+                                        <th>Total Harga</th>
+                                        <th>Tanggal/Waktu</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- Data diisi dari Controller --}}
+                                    @foreach ($transaksis as $trx)
                                         <tr>
-                                            <th>No Transaksi</th>
-                                            <th>Nama Produk</th>
-                                            <th>Jumlah</th>
-                                            <th>Total Harga</th>
-                                            <th>Tanggal/Waktu</th>
-                                            <th>Aksi</th>
+                                            <td>{{ $trx->no_transaksi }}</td>
+                                            <td>{{ $trx->nama_product }}</td>
+                                            <td>{{ $trx->qty }}</td>
+                                            <td>{{ 'Rp ' . number_format($trx->total, 0, ',', '.') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($trx->tanggal)->format('d-m-Y H:i:s') }}</td>
+                                            <td>
+                                                <a href="#" class="btn btn-danger btn-sm button-delete"
+                                                    data-id="{{ $trx->no_transaksi }}">
+                                                    Delete
+                                                </a>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{-- Data diisi dari Controller --}}
-                                        @foreach ($transaksis as $trx)
-                                            <tr>
-                                                <td>{{ $trx->no_transaksi }}</td>
-                                                <td>{{ $trx->nama_product }}</td>
-                                                <td>{{ $trx->qty }}</td>
-                                                <td>{{ 'Rp ' . number_format($trx->total, 0, ',', '.') }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($trx->tanggal)->format('d-m-Y H:i:s') }}</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-danger btn-sm button-delete"
-                                                        data-id="{{ $trx->no_transaksi }}">
-                                                        Delete
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </main>
+        </div>
+        </main>
 
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus Transaksi</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus Transaksi</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="deleteForm" action="" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <div class="modal-body">
+                            <p id="deleteModalText">Apakah Anda yakin ingin menghapus transaksi ini?</p>
                         </div>
-                        <form id="deleteForm" action="" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <div class="modal-body">
-                                <p id="deleteModalText">Apakah Anda yakin ingin menghapus transaksi ini?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-danger">Ya, Hapus Transaksi</button>
-                            </div>
-                        </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Ya, Hapus Transaksi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Your Website {{ date('Y') }}</div>
+                    <div>
+                        <a href="#">Privacy Policy</a>
+                        &middot;
+                        <a href="#">Terms &amp; Conditions</a>
                     </div>
                 </div>
             </div>
-
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website {{ date('Y') }}</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
+        </footer>
+    </div>
     </div>
 @endsection
 

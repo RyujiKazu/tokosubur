@@ -8,7 +8,6 @@ use App\Http\Controllers\HomeController;
 
 
 
-
 Route::get('/', function () {
     return view('home');
 });
@@ -34,3 +33,5 @@ Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produ
 Route::get('/PengolahanPesanan', [PengolahanPesananController::class, 'index'])->name('pengolahan.index');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/export-transaksi', [PengolahanPesananController::class, 'exportExcel']);
