@@ -171,119 +171,16 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+
     <script>
-        // Set font family standar Bootstrap
-        Chart.defaults.global.defaultFontFamily =
-            '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-        Chart.defaults.global.defaultFontColor = '#292b2c';
-
-        // --- GRAFIK AREA (TREN PENJUALAN MINGGU INI) ---
-        var ctxArea = document.getElementById("myAreaChart");
-        if (ctxArea) {
-            var myAreaChart = new Chart(ctxArea, {
-                type: 'line',
-                data: {
-                    // Ambil Label Tanggal dari Controller
-                    labels: @json($tglArea),
-                    datasets: [{
-                        label: "Pendapatan",
-                        lineTension: 0.3,
-                        backgroundColor: "rgba(2,117,216,0.2)",
-                        borderColor: "rgba(2,117,216,1)",
-                        pointRadius: 5,
-                        pointBackgroundColor: "rgba(2,117,216,1)",
-                        pointBorderColor: "rgba(255,255,255,0.8)",
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                        pointHitRadius: 50,
-                        pointBorderWidth: 2,
-                        // Ambil Data Angka dari Controller
-                        data: @json($dataArea),
-                    }],
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            time: {
-                                unit: 'date'
-                            },
-                            gridLines: {
-                                display: false
-                            },
-                            ticks: {
-                                maxTicksLimit: 7
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                min: 0,
-                                maxTicksLimit: 5,
-                                // Format Rupiah di Y-Axis
-                                callback: function(value, index, values) {
-                                    return 'Rp ' + value.toLocaleString('id-ID');
-                                }
-                            },
-                            gridLines: {
-                                color: "rgba(0, 0, 0, .125)"
-                            }
-                        }],
-                    },
-                    legend: {
-                        display: false
-                    },
-                    tooltips: {
-                        callbacks: {
-                            label: function(tooltipItem, chart) {
-                                // Format Rupiah di Tooltip
-                                return 'Rp ' + tooltipItem.yLabel.toLocaleString('id-ID');
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // --- GRAFIK BAR (PENJUALAN PER JENIS GAS) ---
-        var ctxBar = document.getElementById("myBarChart");
-        if (ctxBar) {
-            var myBarChart = new Chart(ctxBar, {
-                type: 'bar',
-                data: {
-                    // Ambil Nama Produk
-                    labels: @json($labelBar),
-                    datasets: [{
-                        label: "Jumlah Terjual (Qty)",
-                        backgroundColor: "rgba(2,117,216,1)",
-                        borderColor: "rgba(2,117,216,1)",
-                        // Ambil Total Qty
-                        data: @json($dataBar),
-                    }],
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            gridLines: {
-                                display: false
-                            },
-                            ticks: {
-                                maxTicksLimit: 6
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                min: 0,
-                                maxTicksLimit: 5
-                            },
-                            gridLines: {
-                                display: true
-                            }
-                        }],
-                    },
-                    legend: {
-                        display: false
-                    }
-                }
-            });
-        }
+        // Kita buat variabel global 'chartData' agar bisa dibaca oleh file external
+        var chartData = {
+            tglArea: @json($tglArea),
+            dataArea: @json($dataArea),
+            labelBar: @json($labelBar),
+            dataBar: @json($dataBar)
+        };
     </script>
+
+    <script src="{{ asset('js/dashboard-charts.js') }}"></script>
 @endsection
