@@ -56,7 +56,9 @@ class Transaksi extends Model
         'total',
         'tanggal',
     ];
-
+    protected $casts = [
+        'tanggal' => 'datetime',
+    ];
     /**
      * Relasi ke model Produk.
      */

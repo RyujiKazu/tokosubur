@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PencatatanPesananController;
 use App\Http\Controllers\PengolahanPesananController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\HomeController;
+
+
+
 
 Route::get('/', function () {
     return view('home');
@@ -28,3 +32,5 @@ Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.up
 Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 
 Route::get('/PengolahanPesanan', [PengolahanPesananController::class, 'index'])->name('pengolahan.index');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
